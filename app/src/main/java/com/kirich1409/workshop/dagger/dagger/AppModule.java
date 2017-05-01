@@ -15,7 +15,10 @@ import dagger.Provides;
  * @authror Kirill Rozov
  * @date 1/5/17.
  */
-@Module(includes = NewsApiModule.class)
+@Module(includes = {
+        NewsApiModule.class,
+        ActivitiesModule.class,
+})
 public class AppModule {
 
     @NonNull

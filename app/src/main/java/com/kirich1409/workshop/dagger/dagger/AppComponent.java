@@ -1,9 +1,7 @@
 package com.kirich1409.workshop.dagger.dagger;
 
-import android.support.annotation.NonNull;
-
+import com.kirich1409.workshop.dagger.NewsApp;
 import com.kirich1409.workshop.dagger.network.NewsApiBaseUrl;
-import com.kirich1409.workshop.dagger.ui.newssource.NewsSourceListFragment;
 
 import javax.inject.Singleton;
 
@@ -15,10 +13,10 @@ import dagger.Component;
  * @date 1/5/17.
  */
 @Singleton
-@Component(modules = {AppModule.class})
+@Component(modules = AppModule.class)
 public interface AppComponent {
 
-    void inject(NewsSourceListFragment fragment);
+    void inject(NewsApp app);
 
     @Component.Builder
     interface Builder {
@@ -26,7 +24,7 @@ public interface AppComponent {
         @BindsInstance
         Builder newsApiBaseUrl(@NewsApiBaseUrl String baseUrl);
 
-        Builder appModule(@NonNull AppModule appModule);
+        Builder appModule(AppModule appModule);
 
         AppComponent build();
     }
