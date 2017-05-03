@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import javax.inject.Inject;
-
 /**
  * @authror Kirill Rozov
  * @date 1/5/17.
@@ -18,8 +16,7 @@ public class ContextComponent implements AndroidComponent {
     @NonNull
     private final Context mContext;
 
-    @Inject
-    ContextComponent(@NonNull final Context context) {
+    public ContextComponent(@NonNull final Context context) {
         mContext = context;
     }
 

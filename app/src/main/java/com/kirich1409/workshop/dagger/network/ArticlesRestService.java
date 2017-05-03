@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.kirich1409.workshop.dagger.network.data.ArticlesResponseDto;
 import com.kirich1409.workshop.dagger.network.data.ArticlesResponseDto.SortDef;
 
-import retrofit2.Call;
+import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -18,6 +18,7 @@ public interface ArticlesRestService {
 
     @NonNull
     @GET("/articles")
-    Call<ArticlesResponseDto> articles(@Query("source") @NonNull String source,
-                                       @Query("sortBy") @SortDef @Nullable String sortBy);
+    Single<ArticlesResponseDto> articles(
+            @Query("source") @NonNull String source,
+            @Query("sortBy") @SortDef @Nullable String sortBy);
 }

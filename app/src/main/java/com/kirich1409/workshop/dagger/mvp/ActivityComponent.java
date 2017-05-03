@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import javax.inject.Inject;
-
 /**
  * @authror Kirill Rozov
  * @date 1/5/17.
@@ -18,8 +16,7 @@ public class ActivityComponent extends ContextComponent {
     @NonNull
     private final Activity mActivity;
 
-    @Inject
-    ActivityComponent(@NonNull final Activity activity) {
+    public ActivityComponent(@NonNull final Activity activity) {
         super(activity);
         mActivity = activity;
     }

@@ -8,7 +8,7 @@ import com.kirich1409.workshop.dagger.network.data.LanguageCode;
 import com.kirich1409.workshop.dagger.network.data.NewsSourceDto.CategoryDef;
 import com.kirich1409.workshop.dagger.network.data.NewsSourcesResponseDto;
 
-import retrofit2.Call;
+import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -21,7 +21,8 @@ public interface NewsSourcesRestService {
 
     @NonNull
     @GET("/sources")
-    Call<NewsSourcesResponseDto> sources(@Nullable @Query("category") @CategoryDef String category,
-                                         @Nullable @Query("language") @LanguageCode String language,
-                                         @Nullable @Query("country") @CountryCode String country);
+    Single<NewsSourcesResponseDto> sources(
+            @Nullable @Query("category") @CategoryDef String category,
+            @Nullable @Query("language") @LanguageCode String language,
+            @Nullable @Query("country") @CountryCode String country);
 }

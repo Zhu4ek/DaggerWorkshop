@@ -7,7 +7,7 @@ import dagger.Subcomponent;
 import dagger.android.AndroidInjector;
 
 @FragmentScope
-@Subcomponent(modules = SourcesMVPModule.class)
+@Subcomponent(modules = {SourcesMVPModule.class, SourcesFragmentModule.class})
 public interface SourcesFragmentSubcomponent extends AndroidInjector<SourcesFragment> {
 
     @Subcomponent.Builder

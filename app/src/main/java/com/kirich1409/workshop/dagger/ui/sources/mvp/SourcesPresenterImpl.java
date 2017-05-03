@@ -1,11 +1,9 @@
 package com.kirich1409.workshop.dagger.ui.sources.mvp;
 
-import android.content.Intent;
+import android.support.annotation.NonNull;
 
-import com.kirich1409.workshop.dagger.mvp.AndroidComponent;
 import com.kirich1409.workshop.dagger.mvp.BasePresenter;
 import com.kirich1409.workshop.dagger.network.data.NewsSourceDto;
-import com.kirich1409.workshop.dagger.ui.articles.ArticlesActivity;
 
 import javax.inject.Inject;
 
@@ -19,17 +17,16 @@ import dagger.Lazy;
 final class SourcesPresenterImpl extends BasePresenter<SourcesView>
         implements SourcesPresenter {
 
-    private Lazy<AndroidComponent> mComponent;
+    @NonNull
+    private final Lazy<SourcesLauncher> mLauncher;
 
     @Inject
-    SourcesPresenterImpl(final Lazy<AndroidComponent> component) {
-        mComponent = component;
+    SourcesPresenterImpl(@NonNull Lazy<SourcesLauncher> launcher) {
+        mLauncher = launcher;
     }
 
     @Override
-    public void openArticles(final NewsSourceDto source) {
-        AndroidComponent component = mComponent.get();
-        Intent intent = ArticlesActivity.newIntent(component.getContext(), source.getId());
-        component.startActivity(intent);
+    public void openArticles(@NonNull NewsSourceDto source) {
+        mLauncher.get().openArticles(source);
     }
 }

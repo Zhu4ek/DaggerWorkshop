@@ -9,8 +9,6 @@ import android.support.v4.app.Fragment;
 
 import java.util.Objects;
 
-import javax.inject.Inject;
-
 /**
  * @authror Kirill Rozov
  * @date 1/5/17.
@@ -20,8 +18,7 @@ public class FragmentComponent implements AndroidComponent {
     @NonNull
     private final Fragment mFragment;
 
-    @Inject
-    FragmentComponent(@NonNull final Fragment fragment) {
+    public FragmentComponent(@NonNull final Fragment fragment) {
         mFragment = fragment;
     }
 

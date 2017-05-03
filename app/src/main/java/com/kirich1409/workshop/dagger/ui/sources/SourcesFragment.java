@@ -45,7 +45,8 @@ public class SourcesFragment extends Fragment implements SourcesView {
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view,
+                              @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPresenter.onAttachView(this);
     }
