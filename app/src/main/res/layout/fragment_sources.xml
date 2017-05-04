@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:component="com.kirich1409.workshop.dagger.ui.sources.SourcesFragment"
+    tools:component="com.kirich1409.news.ui.sources.SourcesFragment"
     >
 
 </FrameLayout>
