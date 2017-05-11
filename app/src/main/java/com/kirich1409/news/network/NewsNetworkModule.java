@@ -3,6 +3,7 @@ package com.kirich1409.news.network;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,6 +16,7 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
@@ -35,6 +37,7 @@ public abstract class NewsNetworkModule {
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(JacksonConverterFactory.create(mapper))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .build();
     }
@@ -59,6 +62,7 @@ public abstract class NewsNetworkModule {
     static OkHttpClient provideOkHttpClient(@NonNull Cache cache) {
         return new OkHttpClient.Builder()
                 .cache(cache)
+                .addNetworkInterceptor(new StethoInterceptor())
                 .addInterceptor(new AddAuthNewsApiInterceptor())
                 .build();
     }

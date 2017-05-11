@@ -3,6 +3,8 @@ package com.kirich1409.news.network.data;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.ArrayMap;
+import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @authror Kirill Rozov
@@ -86,8 +87,22 @@ public class NewsSourceDto {
         mCategory = category;
         mLanguage = language;
         mCountry = country;
-        mLogosUrl = Collections.unmodifiableMap(logosUrl);
+        mLogosUrl = filterUrl(logosUrl);
         mSupportedSorts = Collections.unmodifiableList(supportedSorts);
+    }
+
+    private static Map<String, String> filterUrl(@NonNull Map<String, String> logosUrl) {
+        ArrayMap<String, String> result = new ArrayMap<>(logosUrl.size());
+        for (Map.Entry<String, String> entry : logosUrl.entrySet()) {
+            if (!TextUtils.isEmpty(entry.getValue())) {
+                result.put(entry.getKey(), entry.getValue());
+            }
+        }
+        if (result.isEmpty()) {
+            return Collections.emptyMap();
+        } else {
+            return result;
+        }
     }
 
     @NonNull
@@ -156,7 +171,7 @@ public class NewsSourceDto {
         return mId.equals(newsSourceDto.mId) &&
                 mName.equals(newsSourceDto.mName) &&
                 mDescription.equals(newsSourceDto.mDescription) &&
-                Objects.equals(mUrl, newsSourceDto.mUrl) &&
+                mUrl == null ? newsSourceDto.mUrl == null : mUrl.equals(newsSourceDto.mUrl) &&
                 mCategory.equals(newsSourceDto.mCategory) &&
                 mLanguage.equals(newsSourceDto.mLanguage) &&
                 mCountry.equals(newsSourceDto.mCountry) &&

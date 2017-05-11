@@ -3,6 +3,8 @@
           package="com.kirich1409.news"
     >
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".NewsApp"
         android:allowBackup="true"

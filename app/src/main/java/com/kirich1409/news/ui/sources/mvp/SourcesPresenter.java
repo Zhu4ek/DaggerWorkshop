@@ -23,7 +23,6 @@ import io.reactivex.disposables.Disposable;
  * @authror Kirill Rozov
  * @date 1/5/17.
  */
-
 final class SourcesPresenter extends BasePresenter<SourcesContract.View>
         implements SourcesContract.Presenter {
 
@@ -55,12 +54,12 @@ final class SourcesPresenter extends BasePresenter<SourcesContract.View>
 
     @Override
     protected void onAttachView() {
-        mDataSource.getNewsSourcesSubscription();
         loadSources();
 
         if (!mDataLoaded
                 && !mLoadingData) {
             mLoadingData = true;
+            getView().setProgressVisible(true);
             mDataSource.loadNewsSources();
         }
     }

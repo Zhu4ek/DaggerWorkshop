@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.facebook.stetho.Stetho;
 import com.kirich1409.news.dagger.AppComponent;
 import com.kirich1409.news.dagger.AppModule;
 import com.kirich1409.news.dagger.DaggerAppComponent;
@@ -36,6 +37,7 @@ public class NewsApp extends Application implements HasActivityInjector {
     public void onCreate() {
         super.onCreate();
         mAppComponent.inject(this);
+        Stetho.initializeWithDefaults(this);
     }
 
     @NonNull

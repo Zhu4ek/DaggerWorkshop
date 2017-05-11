@@ -1,10 +1,13 @@
 package com.kirich1409.news.ui.sources;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -17,6 +20,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -25,15 +31,24 @@ import dagger.android.support.AndroidSupportInjection;
  */
 
 public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
-        implements SourcesContract.View {
+        implements SourcesContract.View, SourceAdapter.Listener {
 
     @Inject
     SourcesContract.Presenter mPresenter;
 
+    @BindView(R.id.list)
+    RecyclerView mRecyclerView;
+
+    @BindView(R.id.progress)
+    View mProgressView;
+
+    @Nullable
+    private Unbinder mUnbinder;
+
     @Override
-    public void onAttach(@NonNull final Context context) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
-        super.onAttach(context);
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable
@@ -48,25 +63,33 @@ public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
     public void onViewCreated(@NonNull final android.view.View view,
                               @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mUnbinder = ButterKnife.bind(this, view);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
         mPresenter.attachView(this);
     }
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         mPresenter.detachView();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mPresenter = null;
+        if (mUnbinder != null) {
+            mUnbinder.unbind();
+            mUnbinder = null;
+        }
+        super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroyView();
+        mPresenter = null;
     }
 
     @Override
@@ -82,9 +105,17 @@ public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
 
     @Override
     public void setSources(@NonNull final List<NewsSourceDto> sources) {
+        mRecyclerView.setAdapter(new SourceAdapter(getContext(), sources, this));
     }
 
     @Override
     public void setProgressVisible(final boolean visible) {
+        mProgressView.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onSourceClicked(@NonNull RecyclerView.ViewHolder viewHolder,
+                                @NonNull NewsSourceDto source) {
+        mPresenter.openArticles(source);
     }
 }

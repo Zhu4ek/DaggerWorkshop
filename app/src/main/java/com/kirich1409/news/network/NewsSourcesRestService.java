@@ -20,7 +20,7 @@ import retrofit2.http.Query;
 public interface NewsSourcesRestService {
 
     @NonNull
-    @GET("/sources")
+    @GET("sources")
     Single<NewsSourcesResponseDto> sources(
             @Nullable @Query("category") @CategoryDef String category,
             @Nullable @Query("language") @LanguageCode String language,

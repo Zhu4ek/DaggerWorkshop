@@ -1,9 +1,6 @@
-package com.kirich1409.news.dagger;
+package com.kirich1409.news.ui.sources;
 
 import android.app.Activity;
-
-import com.kirich1409.news.ui.sources.SourcesActivity;
-import com.kirich1409.news.ui.sources.SourcesActivitySubcomponent;
 
 import dagger.Binds;
 import dagger.Module;

@@ -20,7 +20,6 @@ import io.reactivex.subjects.Subject;
 /**
  * @author kirylrozau
  */
-
 public final class NewsSourcesDataSource {
 
     private final NewsSourcesRestService mService;
@@ -71,7 +70,7 @@ public final class NewsSourcesDataSource {
 
         @Override
         public void onError(@NonNull Throwable error) {
-            mSubject.onComplete();
+            mSubject.onError(error);
         }
     }
 }

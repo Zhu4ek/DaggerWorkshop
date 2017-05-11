@@ -19,6 +19,7 @@ public abstract class BasePresenter<V extends MVPView> implements MVPPresenter<V
     @Override
     public final void attachView(@NonNull final V view) {
         mView = new WeakReference<>(view);
+        onAttachView();
     }
 
     protected void onAttachView() {
@@ -27,6 +28,7 @@ public abstract class BasePresenter<V extends MVPView> implements MVPPresenter<V
     @Override
     public final void detachView() {
         mView = null;
+        onDetachView();
     }
 
     @Nullable
