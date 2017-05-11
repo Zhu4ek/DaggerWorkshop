@@ -6,13 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.kirich1409.news.R;
 import com.kirich1409.news.network.data.NewsSourceDto;
-import com.kirich1409.news.ui.sources.mvp.SourcesPresenter;
-import com.kirich1409.news.ui.sources.mvp.SourcesView;
+import com.kirich1409.news.ui.sources.mvp.SourcesContract;
 
 import java.util.List;
 
@@ -25,10 +23,10 @@ import dagger.android.support.AndroidSupportInjection;
  * @date 1/5/17.
  */
 
-public class SourcesFragment extends Fragment implements SourcesView {
+public class SourcesFragment extends Fragment implements SourcesContract.View {
 
     @Inject
-    SourcesPresenter mPresenter;
+    SourcesContract.Presenter mPresenter;
 
     @Override
     public void onAttach(@NonNull final Context context) {
@@ -38,14 +36,14 @@ public class SourcesFragment extends Fragment implements SourcesView {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull final LayoutInflater inflater,
-                             @Nullable final ViewGroup container,
-                             @Nullable final Bundle savedInstanceState) {
+    public android.view.View onCreateView(@NonNull final LayoutInflater inflater,
+                                          @Nullable final ViewGroup container,
+                                          @Nullable final Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_sources, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view,
+    public void onViewCreated(@NonNull final android.view.View view,
                               @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mPresenter.onAttachView(this);

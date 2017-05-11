@@ -30,13 +30,13 @@ public class AppModule {
 
     @Singleton
     @Provides
-    public Application provideApplication() {
+    Application provideApplication() {
         return mApplication;
     }
 
     @Singleton
     @Provides
-    public Context provideAppContext() {
+    Context provideAppContext() {
         return mApplication;
     }
 }

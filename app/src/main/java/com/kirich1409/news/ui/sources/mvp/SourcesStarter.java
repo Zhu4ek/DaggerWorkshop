@@ -9,25 +9,22 @@ import com.kirich1409.news.ui.articles.ArticlesActivity;
 
 import javax.inject.Inject;
 
-import dagger.Lazy;
-
 /**
  * Created by Kirill Rozov on 5/3/17.
  */
-class SourcesLauncherImpl implements SourcesLauncher {
+class SourcesStarter implements SourcesContract.Starter {
 
     @NonNull
-    private final Lazy<AndroidComponent> mComponent;
+    private final AndroidComponent mComponent;
 
     @Inject
-    SourcesLauncherImpl(@NonNull Lazy<AndroidComponent> component) {
+    SourcesStarter(@NonNull AndroidComponent component) {
         mComponent = component;
     }
 
     @Override
     public void openArticles(@NonNull NewsSourceDto source) {
-        AndroidComponent component = mComponent.get();
-        Intent intent = ArticlesActivity.newIntent(component.getContext(), source.getId());
-        component.startActivity(intent);
+        Intent intent = ArticlesActivity.newIntent(mComponent.getContext(), source.getId());
+        mComponent.startActivity(intent);
     }
 }

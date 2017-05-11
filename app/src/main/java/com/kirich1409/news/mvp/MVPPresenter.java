@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
  * @date 1/5/17.
  */
 
-public interface Presenter<V extends MVPView> {
+public interface MVPPresenter<V extends MVPView> {
 
     void onAttachView(@NonNull V view);
 

@@ -7,8 +7,8 @@ import dagger.Module;
 public abstract class SourcesMVPModule {
 
     @Binds
-    abstract SourcesPresenter bindSourcesPresenter(SourcesPresenterImpl presenter);
+    abstract SourcesContract.Presenter bindPresenter(SourcesPresenter presenter);
 
     @Binds
-    abstract SourcesLauncher bindSourcesLauncher(SourcesLauncherImpl launcher);
+    abstract SourcesContract.Starter bindStarter(SourcesStarter starter);
 }

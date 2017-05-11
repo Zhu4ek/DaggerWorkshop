@@ -21,6 +21,7 @@ public interface AppComponent {
     @Component.Builder
     interface Builder {
 
+        @SuppressWarnings("SameParameterValue")
         @BindsInstance
         Builder newsApiBaseUrl(@NewsApiBaseUrl String baseUrl);
 

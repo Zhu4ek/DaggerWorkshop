@@ -3,14 +3,11 @@ package com.kirich1409.news.network.data;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -33,16 +30,6 @@ import java.util.Objects;
 })
 @Keep
 public class NewsSourceDto {
-
-    public static final String CATEGORY_BUSINESS = "business";
-    public static final String CATEGORY_ENTERTAINMENT = "entertainment";
-    public static final String CATEGORY_GAMING = "gaming";
-    public static final String CATEGORY_GENERAL = "general";
-    public static final String CATEGORY_MUSIC = "music";
-    public static final String CATEGORY_POLITICS = "politics";
-    public static final String CATEGORY_SCIENCE_AND_NATURE = "science-and-nature";
-    public static final String CATEGORY_SPORT = "sport";
-    public static final String CATEGORY_TECHNOLOGY = "technology";
 
     public static final String PROPERTY_ID = "id";
     public static final String PROPERTY_NAME = "name";
@@ -87,7 +74,7 @@ public class NewsSourceDto {
             @NonNull @JsonProperty(PROPERTY_NAME) final String name,
             @NonNull @JsonProperty(PROPERTY_DESCRIPTION) final String description,
             @Nullable @JsonProperty(PROPERTY_URL) final String url,
-            @NonNull @JsonProperty(PROPERTY_CATEGORY) @CategoryDef final String category,
+            @NonNull @JsonProperty(PROPERTY_CATEGORY) @Categories.CategoryDef final String category,
             @NonNull @JsonProperty(PROPERTY_LANGUAGE) @LanguageCode final String language,
             @NonNull @JsonProperty(PROPERTY_COUNTRY) @CountryCode final String country,
             @NonNull @JsonProperty(PROPERTY_LOGOS_URL) final Map<String, String> logosUrl,
@@ -123,7 +110,7 @@ public class NewsSourceDto {
         return mUrl;
     }
 
-    @CategoryDef
+    @Categories.CategoryDef
     @NonNull
     public String getCategory() {
         return mCategory;
@@ -180,22 +167,6 @@ public class NewsSourceDto {
     @Override
     public int hashCode() {
         return mId.hashCode();
-    }
-
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({
-            CATEGORY_BUSINESS,
-            CATEGORY_ENTERTAINMENT,
-            CATEGORY_GAMING,
-            CATEGORY_GENERAL,
-            CATEGORY_MUSIC,
-            CATEGORY_MUSIC,
-            CATEGORY_POLITICS,
-            CATEGORY_SCIENCE_AND_NATURE,
-            CATEGORY_SPORT,
-            CATEGORY_TECHNOLOGY
-    })
-    public @interface CategoryDef {
     }
 
 }

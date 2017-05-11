@@ -3,9 +3,9 @@ package com.kirich1409.news.network;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.kirich1409.news.network.data.Categories.CategoryDef;
 import com.kirich1409.news.network.data.CountryCode;
 import com.kirich1409.news.network.data.LanguageCode;
-import com.kirich1409.news.network.data.NewsSourceDto.CategoryDef;
 import com.kirich1409.news.network.data.NewsSourcesResponseDto;
 
 import io.reactivex.Single;

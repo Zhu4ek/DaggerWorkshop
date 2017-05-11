@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
  * @date 1/5/17.
  */
 
-public abstract class BasePresenter<V extends MVPView> implements Presenter<V> {
+public abstract class BasePresenter<V extends MVPView> implements MVPPresenter<V> {
 
     @Nullable
     private V mView;
