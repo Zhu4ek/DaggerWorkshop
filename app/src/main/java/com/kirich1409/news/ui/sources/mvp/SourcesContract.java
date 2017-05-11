@@ -25,6 +25,8 @@ public final class SourcesContract {
         void setSources(@NonNull List<NewsSourceDto> sources);
 
         void setProgressVisible(boolean visible);
+
+        void showError(@NonNull String errorMessage);
     }
 
     private SourcesContract() {

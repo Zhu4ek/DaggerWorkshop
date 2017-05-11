@@ -18,6 +18,7 @@ import dagger.Provides;
 @Module(includes = {
         NewsApiModule.class,
         ActivitiesModule.class,
+        RxModule.class,
 })
 public class AppModule {
 

@@ -1,8 +1,11 @@
 package com.kirich1409.news.mvp;
 
-import android.support.annotation.CallSuper;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 
 /**
  * @authror Kirill Rozov
@@ -11,23 +14,42 @@ import android.support.annotation.Nullable;
 
 public abstract class BasePresenter<V extends MVPView> implements MVPPresenter<V> {
 
-    @Nullable
-    private V mView;
+    private Reference<V> mView;
 
-    @CallSuper
     @Override
-    public void onAttachView(@NonNull final V view) {
-        mView = view;
+    public final void attachView(@NonNull final V view) {
+        mView = new WeakReference<>(view);
     }
 
-    @CallSuper
+    protected void onAttachView() {
+    }
+
     @Override
-    public void onDetachView() {
+    public final void detachView() {
         mView = null;
     }
 
     @Nullable
+    @Override
+    public Bundle saveInstanceState() {
+        return null;
+    }
+
+    @Override
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+    }
+
+    @Override
+    public void onDestroyView() {
+    }
+
+    protected void onDetachView() {
+    }
+
+    protected void onDestory() {
+    }
+
     protected final V getView() {
-        return mView;
+        return mView.get();
     }
 }

@@ -49,8 +49,10 @@ public final class ArticlesResponseDto extends ResponseDto<ArticleDto> {
             @NonNull @JsonProperty(PROPERTY_STATUS) @StatusDef final String status,
             @NonNull @JsonProperty(PROPERTY_SOURCE) final String source,
             @NonNull @JsonProperty(PROPERTY_ARTICLES) final List<ArticleDto> articles,
-            @NonNull @JsonProperty(PROPERTY_SORT) @SortDef final String sort) {
-        super(status, articles);
+            @NonNull @JsonProperty(PROPERTY_SORT) @SortDef final String sort,
+            @NonNull @JsonProperty(PROPERTY_ERROR_CODE) int errorCode,
+            @NonNull @JsonProperty(PROPERTY_ERROR_MESSAGE) String errorMessage) {
+        super(status, errorCode, errorMessage, articles);
         mSource = source;
         mSort = sort;
     }

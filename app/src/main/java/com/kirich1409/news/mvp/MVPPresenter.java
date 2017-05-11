@@ -1,6 +1,8 @@
 package com.kirich1409.news.mvp;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * @authror Kirill Rozov
@@ -9,7 +11,14 @@ import android.support.annotation.NonNull;
 
 public interface MVPPresenter<V extends MVPView> {
 
-    void onAttachView(@NonNull V view);
+    void attachView(@NonNull V view);
 
-    void onDetachView();
+    void detachView();
+
+    void onDestroyView();
+
+    @Nullable
+    Bundle saveInstanceState();
+
+    void onRestoreInstanceState(@NonNull Bundle savedInstanceState);
 }

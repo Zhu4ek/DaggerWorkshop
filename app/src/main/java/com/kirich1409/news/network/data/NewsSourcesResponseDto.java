@@ -24,8 +24,10 @@ public class NewsSourcesResponseDto extends ResponseDto<NewsSourceDto> {
     @JsonCreator
     public NewsSourcesResponseDto(
             @NonNull @JsonProperty(PROPERTY_STATUS) final String status,
-            @NonNull @JsonProperty(PROPERTY_SOURCES) final List<NewsSourceDto> sources) {
-        super(status, sources);
+            @NonNull @JsonProperty(PROPERTY_SOURCES) final List<NewsSourceDto> sources,
+            @NonNull @JsonProperty(PROPERTY_ERROR_CODE) int errorCode,
+            @NonNull @JsonProperty(PROPERTY_ERROR_MESSAGE) String errorMessage) {
+        super(status, errorCode, errorMessage, sources);
     }
 
     @NonNull

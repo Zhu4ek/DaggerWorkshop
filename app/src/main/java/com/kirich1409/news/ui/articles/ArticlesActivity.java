@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.kirich1409.news.R;
-import com.kirich1409.news.network.data.ArticlesResponseDto;
+import com.kirich1409.news.network.data.ArticlesResponseDto.SortDef;
 
 public class ArticlesActivity extends AppCompatActivity {
 
@@ -22,7 +22,7 @@ public class ArticlesActivity extends AppCompatActivity {
 
     public static Intent newIntent(@NonNull Context context,
                                    @NonNull String source,
-                                   @NonNull @ArticlesResponseDto.SortDef String sort) {
+                                   @NonNull @SortDef String sort) {
         return newIntent(context, source)
                 .putExtra(EXTRA_SORT, sort);
     }
