@@ -6,6 +6,6 @@
     android:name="com.kirich1409.news.ui.sources.SourcesFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:component="com.kirich1409.news.ui.sources.SourcesActivity"
+    tools:component="com.kirich1409.news.ui.articles.SourcesActivity"
     tools:layout="@layout/fragment_sources"
     />

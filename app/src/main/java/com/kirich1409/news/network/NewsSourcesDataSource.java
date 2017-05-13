@@ -14,7 +14,7 @@ import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
 /**
@@ -24,7 +24,7 @@ public final class NewsSourcesDataSource {
 
     private final NewsSourcesRestService mService;
     private final Scheduler mNetworkScheduler;
-    final Subject<NewsSourcesResponseDto> mSubject = PublishSubject.create();
+    final Subject<NewsSourcesResponseDto> mSubject = BehaviorSubject.create();
 
     @Nullable
     Disposable mDisposable;
@@ -36,12 +36,12 @@ public final class NewsSourcesDataSource {
         mNetworkScheduler = networkScheduler;
     }
 
-    public Observable<NewsSourcesResponseDto> getNewsSourcesSubscription() {
+    public Observable<NewsSourcesResponseDto> getSubscription() {
         return mSubject.serialize();
     }
 
-    public void loadNewsSources() {
-        if (mDisposable != null && !mDisposable.isDisposed()) {
+    public void load() {
+        if (!RxUtils.isDisposedOrNull(mDisposable)) {
             return;
         }
 

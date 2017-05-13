@@ -31,7 +31,7 @@ import dagger.android.support.AndroidSupportInjection;
  */
 
 public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
-        implements SourcesContract.View, SourceAdapter.Listener {
+        implements SourcesContract.View, SourceAdapter.Listener<NewsSourceDto, SourceAdapter.ViewHolder> {
 
     @Inject
     SourcesContract.Presenter mPresenter;
@@ -70,25 +70,17 @@ public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
     }
 
     @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        mPresenter.attachView(this);
-    }
-
-    @Override
     public void onDestroyView() {
-        mPresenter.detachView();
+        super.onDestroyView();
         if (mUnbinder != null) {
             mUnbinder.unbind();
             mUnbinder = null;
         }
-        super.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPresenter.onDestroyView();
         mPresenter = null;
     }
 
@@ -99,8 +91,7 @@ public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
 
     @Override
     public void showError(@NonNull String errorMessage) {
-        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG)
-                .show();
+        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -114,8 +105,8 @@ public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
     }
 
     @Override
-    public void onSourceClicked(@NonNull RecyclerView.ViewHolder viewHolder,
-                                @NonNull NewsSourceDto source) {
+    public void onItemSelected(@NonNull SourceAdapter.ViewHolder viewHolder,
+                               @NonNull NewsSourceDto source) {
         mPresenter.openArticles(source);
     }
 }

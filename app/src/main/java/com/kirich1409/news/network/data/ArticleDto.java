@@ -1,5 +1,7 @@
 package com.kirich1409.news.network.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,7 +27,9 @@ import java.util.Objects;
         ArticleDto.PROPERTY_PUBLISHED,
 })
 @Keep
-public class ArticleDto {
+public class ArticleDto implements Parcelable {
+
+    public static final Parcelable.Creator<ArticleDto> CREATOR = new ArticleDtoCreator();
 
     public static final String PROPERTY_AUTHOR = "author";
     public static final String PROPERTY_TITLE = "title";
@@ -55,7 +59,7 @@ public class ArticleDto {
     private final String mImageUrl;
 
     @JsonProperty(PROPERTY_PUBLISHED)
-    @NonNull
+    @Nullable
     private final OffsetDateTime mPublished;
 
     @JsonCreator
@@ -64,7 +68,7 @@ public class ArticleDto {
                       @NonNull @JsonProperty(PROPERTY_DESCRIPTION) final String description,
                       @Nullable @JsonProperty(PROPERTY_URL) final String url,
                       @Nullable @JsonProperty(PROPERTY_IMAGE_URL) final String imageUrl,
-                      @NonNull @JsonProperty(PROPERTY_PUBLISHED) final OffsetDateTime published) {
+                      @Nullable @JsonProperty(PROPERTY_PUBLISHED) final OffsetDateTime published) {
         mAuthor = author;
         mTitle = title;
         mDescription = description;
@@ -98,7 +102,7 @@ public class ArticleDto {
         return mImageUrl;
     }
 
-    @NonNull
+    @Nullable
     public OffsetDateTime getPublished() {
         return mPublished;
     }
@@ -130,5 +134,42 @@ public class ArticleDto {
     @Override
     public int hashCode() {
         return 31 * mPublished.hashCode() + Objects.hashCode(mUrl);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mAuthor);
+        dest.writeString(mTitle);
+        dest.writeString(mDescription);
+        dest.writeString(mUrl);
+        dest.writeString(mImageUrl);
+        dest.writeSerializable(mPublished);
+    }
+
+    protected ArticleDto(Parcel in) {
+        mAuthor = in.readString();
+        mTitle = in.readString();
+        mDescription = in.readString();
+        mUrl = in.readString();
+        mImageUrl = in.readString();
+        mPublished = (OffsetDateTime) in.readSerializable();
+    }
+
+    private static class ArticleDtoCreator implements Creator<ArticleDto> {
+
+        @Override
+        public ArticleDto createFromParcel(Parcel source) {
+            return new ArticleDto(source);
+        }
+
+        @Override
+        public ArticleDto[] newArray(int size) {
+            return new ArticleDto[size];
+        }
     }
 }

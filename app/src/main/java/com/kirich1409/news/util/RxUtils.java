@@ -17,6 +17,10 @@ public final class RxUtils {
         }
     }
 
+    public static boolean isDisposedOrNull(@Nullable Disposable disposable) {
+        return disposable == null || disposable.isDisposed();
+    }
+
     private RxUtils() {
         throw new UnsupportedOperationException();
     }

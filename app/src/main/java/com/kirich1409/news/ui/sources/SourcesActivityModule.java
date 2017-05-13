@@ -1,20 +1,12 @@
 package com.kirich1409.news.ui.sources;
 
-import android.app.Activity;
-
-import dagger.Binds;
 import dagger.Module;
-import dagger.android.ActivityKey;
-import dagger.android.AndroidInjector;
-import dagger.multibindings.IntoMap;
+import dagger.android.ContributesAndroidInjector;
 
-@Module(subcomponents = SourcesActivitySubcomponent.class)
+@Module
 public abstract class SourcesActivityModule {
 
-    @Binds
-    @IntoMap
-    @ActivityKey(SourcesActivity.class)
-    abstract AndroidInjector.Factory<? extends Activity> bindSourcesActivityInjectorFactory(
-            SourcesActivitySubcomponent.Builder builder);
+    @ContributesAndroidInjector(modules = SourcesFragmentModule.class)
+    abstract SourcesFragment contributeSourcesFragmentInjector();
 
 }

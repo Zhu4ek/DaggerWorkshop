@@ -1,18 +1,18 @@
 package com.kirich1409.news.network.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @authror Kirill Rozov
@@ -30,7 +30,7 @@ import java.util.Map;
         NewsSourceDto.PROPERTY_SUPPORTED_SORTS,
 })
 @Keep
-public class NewsSourceDto {
+public class NewsSourceDto implements Parcelable {
 
     public static final String PROPERTY_ID = "id";
     public static final String PROPERTY_NAME = "name";
@@ -41,6 +41,8 @@ public class NewsSourceDto {
     public static final String PROPERTY_COUNTRY = "country";
     public static final String PROPERTY_LOGOS_URL = "urlsToLogos";
     public static final String PROPERTY_SUPPORTED_SORTS = "sortBysAvailable";
+
+    public static final Parcelable.Creator<NewsSourceDto> CREATOR = new NewsSourceDtoCreator();
 
     @NonNull
     private final String mId;
@@ -63,11 +65,8 @@ public class NewsSourceDto {
     @NonNull
     private final String mCountry;
 
-    @NonNull
-    private final Map<String, String> mLogosUrl;
-
-    @NonNull
-    private final List<String> mSupportedSorts;
+    @Nullable
+    private final String mLogoUrl;
 
     @JsonCreator
     public NewsSourceDto(
@@ -78,8 +77,7 @@ public class NewsSourceDto {
             @NonNull @JsonProperty(PROPERTY_CATEGORY) @Categories.CategoryDef final String category,
             @NonNull @JsonProperty(PROPERTY_LANGUAGE) @LanguageCode final String language,
             @NonNull @JsonProperty(PROPERTY_COUNTRY) @CountryCode final String country,
-            @NonNull @JsonProperty(PROPERTY_LOGOS_URL) final Map<String, String> logosUrl,
-            @NonNull @JsonProperty(PROPERTY_SUPPORTED_SORTS) final List<String> supportedSorts) {
+            @NonNull @JsonProperty(PROPERTY_LOGOS_URL) final Map<String, String> logoUrl) {
         mId = id;
         mName = name;
         mDescription = description;
@@ -87,22 +85,28 @@ public class NewsSourceDto {
         mCategory = category;
         mLanguage = language;
         mCountry = country;
-        mLogosUrl = filterUrl(logosUrl);
-        mSupportedSorts = Collections.unmodifiableList(supportedSorts);
+        mLogoUrl = filterUrl(logoUrl);
     }
 
-    private static Map<String, String> filterUrl(@NonNull Map<String, String> logosUrl) {
-        ArrayMap<String, String> result = new ArrayMap<>(logosUrl.size());
+    protected NewsSourceDto(Parcel in) {
+        mId = in.readString();
+        mName = in.readString();
+        mDescription = in.readString();
+        mUrl = in.readString();
+        mCategory = in.readString();
+        mLanguage = in.readString();
+        mCountry = in.readString();
+        mLogoUrl = in.readString();
+    }
+
+    @Nullable
+    private static String filterUrl(@NonNull Map<String, String> logosUrl) {
         for (Map.Entry<String, String> entry : logosUrl.entrySet()) {
             if (!TextUtils.isEmpty(entry.getValue())) {
-                result.put(entry.getKey(), entry.getValue());
+                return entry.getValue();
             }
         }
-        if (result.isEmpty()) {
-            return Collections.emptyMap();
-        } else {
-            return result;
-        }
+        return null;
     }
 
     @NonNull
@@ -143,14 +147,9 @@ public class NewsSourceDto {
         return mCountry;
     }
 
-    @NonNull
-    public Map<String, String> getLogosUrl() {
-        return mLogosUrl;
-    }
-
-    @NonNull
-    public List<String> getSupportedSorts() {
-        return mSupportedSorts;
+    @Nullable
+    public String getLogoUrl() {
+        return mLogoUrl;
     }
 
     @Override
@@ -171,12 +170,11 @@ public class NewsSourceDto {
         return mId.equals(newsSourceDto.mId) &&
                 mName.equals(newsSourceDto.mName) &&
                 mDescription.equals(newsSourceDto.mDescription) &&
-                mUrl == null ? newsSourceDto.mUrl == null : mUrl.equals(newsSourceDto.mUrl) &&
+                Objects.equals(mUrl, newsSourceDto.mUrl) &&
                 mCategory.equals(newsSourceDto.mCategory) &&
                 mLanguage.equals(newsSourceDto.mLanguage) &&
                 mCountry.equals(newsSourceDto.mCountry) &&
-                mLogosUrl.equals(newsSourceDto.mLogosUrl) &&
-                mSupportedSorts.equals(newsSourceDto.mSupportedSorts);
+                Objects.equals(mLogoUrl, newsSourceDto.mLogoUrl);
     }
 
     @Override
@@ -184,4 +182,33 @@ public class NewsSourceDto {
         return mId.hashCode();
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mId);
+        dest.writeString(mName);
+        dest.writeString(mDescription);
+        dest.writeString(mUrl);
+        dest.writeString(mCategory);
+        dest.writeString(mLanguage);
+        dest.writeString(mCountry);
+        dest.writeString(mLogoUrl);
+    }
+
+    private static class NewsSourceDtoCreator implements Creator<NewsSourceDto> {
+
+        @Override
+        public NewsSourceDto createFromParcel(Parcel source) {
+            return new NewsSourceDto(source);
+        }
+
+        @Override
+        public NewsSourceDto[] newArray(int size) {
+            return new NewsSourceDto[size];
+        }
+    }
 }

@@ -38,7 +38,6 @@ final class SourcesPresenter extends BasePresenter<SourcesContract.View>
     private final Scheduler mComputationScheduler;
     private final Scheduler mObserverScheduler;
 
-    private boolean mDataLoaded;
     private boolean mLoadingData;
 
     @Inject
@@ -54,13 +53,12 @@ final class SourcesPresenter extends BasePresenter<SourcesContract.View>
 
     @Override
     protected void onAttachView() {
-        loadSources();
+        subscribeToNewsSourcesUpdates();
 
-        if (!mDataLoaded
-                && !mLoadingData) {
+        if (!mLoadingData) {
             mLoadingData = true;
             getView().setProgressVisible(true);
-            mDataSource.loadNewsSources();
+            mDataSource.load();
         }
     }
 
@@ -80,16 +78,14 @@ final class SourcesPresenter extends BasePresenter<SourcesContract.View>
         mStarter.get().openArticles(source);
     }
 
-    private void loadSources() {
-        if (mNewsSourcesDisposable != null
-                && !mNewsSourcesDisposable.isDisposed()) {
+    private void subscribeToNewsSourcesUpdates() {
+        if (!RxUtils.isDisposedOrNull(mNewsSourcesDisposable)) {
             return;
         }
 
-        mDataSource.getNewsSourcesSubscription()
+        mDataSource.getSubscription()
                 .subscribeOn(mComputationScheduler)
                 .observeOn(mObserverScheduler)
-                .doFinally(() -> mLoadingData = false)
                 .subscribe(new NewsSourcesObserver());
     }
 
@@ -106,7 +102,6 @@ final class SourcesPresenter extends BasePresenter<SourcesContract.View>
                 SourcesContract.View view = getView();
                 view.setProgressVisible(false);
                 view.setSources(response.getSources());
-                mDataLoaded = true;
 
             } else if (NewsSourcesResponseDto.STATUS_ERROR.equals(response.getStatus())) {
                 showError(response);
@@ -115,6 +110,8 @@ final class SourcesPresenter extends BasePresenter<SourcesContract.View>
                 throw Exceptions.newUnsupportedOperation(
                         "Unknown status='%s'", response.getStatus());
             }
+
+            mLoadingData = false;
         }
 
         @Override
@@ -122,6 +119,7 @@ final class SourcesPresenter extends BasePresenter<SourcesContract.View>
             SourcesContract.View view = getView();
             view.setProgressVisible(false);
             view.showError(error.getMessage());
+            mLoadingData = false;
         }
 
         @Override

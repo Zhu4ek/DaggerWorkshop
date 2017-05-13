@@ -24,7 +24,7 @@ class SourcesStarter implements SourcesContract.Starter {
 
     @Override
     public void openArticles(@NonNull NewsSourceDto source) {
-        Intent intent = ArticlesActivity.newIntent(mComponent.getContext(), source.getId());
+        Intent intent = ArticlesActivity.newIntent(mComponent.getContext(), source);
         mComponent.startActivity(intent);
     }
 }

@@ -1,8 +1,8 @@
 package com.kirich1409.news;
 
 import android.app.Activity;
-import android.app.Application;
 import android.support.annotation.NonNull;
+import android.support.multidex.MultiDexApplication;
 
 import com.facebook.stetho.Stetho;
 import com.kirich1409.news.dagger.AppComponent;
@@ -19,7 +19,7 @@ import dagger.android.HasActivityInjector;
  * @date 1/5/17.
  */
 
-public class NewsApp extends Application implements HasActivityInjector {
+public class NewsApp extends MultiDexApplication implements HasActivityInjector {
 
     @Inject
     DispatchingAndroidInjector<Activity> mActivityInjector;

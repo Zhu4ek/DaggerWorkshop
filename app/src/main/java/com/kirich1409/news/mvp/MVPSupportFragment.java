@@ -32,6 +32,25 @@ public abstract class MVPSupportFragment<V extends MVPView> extends Fragment {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        getPresenter().attachView((V) this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getPresenter().detachView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getPresenter().onDestroyView();
+    }
+
     @CallSuper
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

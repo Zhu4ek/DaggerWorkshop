@@ -17,7 +17,7 @@ import retrofit2.http.Query;
 public interface ArticlesRestService {
 
     @NonNull
-    @GET("/articles")
+    @GET("articles")
     Single<ArticlesResponseDto> articles(
             @Query("source") @NonNull String source,
             @Query("sortBy") @SortDef @Nullable String sortBy

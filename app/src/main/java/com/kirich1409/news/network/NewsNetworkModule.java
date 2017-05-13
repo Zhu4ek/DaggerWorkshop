@@ -4,8 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
+import org.threeten.bp.OffsetDateTime;
 
 import java.io.File;
 
@@ -46,7 +49,12 @@ public abstract class NewsNetworkModule {
     @Provides
     static ObjectMapper provideObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        SimpleModule threeTenModule = new SimpleModule("threeTen");
+        threeTenModule.addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer());
+        mapper.registerModule(threeTenModule);
+
         return mapper;
     }
 
