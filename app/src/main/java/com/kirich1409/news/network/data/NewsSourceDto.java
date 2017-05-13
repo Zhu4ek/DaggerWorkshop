@@ -23,11 +23,6 @@ import java.util.Objects;
         NewsSourceDto.PROPERTY_NAME,
         NewsSourceDto.PROPERTY_DESCRIPTION,
         NewsSourceDto.PROPERTY_URL,
-        NewsSourceDto.PROPERTY_CATEGORY,
-        NewsSourceDto.PROPERTY_LANGUAGE,
-        NewsSourceDto.PROPERTY_COUNTRY,
-        NewsSourceDto.PROPERTY_LOGOS_URL,
-        NewsSourceDto.PROPERTY_SUPPORTED_SORTS,
 })
 @Keep
 public class NewsSourceDto implements Parcelable {
@@ -36,11 +31,6 @@ public class NewsSourceDto implements Parcelable {
     public static final String PROPERTY_NAME = "name";
     public static final String PROPERTY_DESCRIPTION = "description";
     public static final String PROPERTY_URL = "url";
-    public static final String PROPERTY_CATEGORY = "category";
-    public static final String PROPERTY_LANGUAGE = "language";
-    public static final String PROPERTY_COUNTRY = "country";
-    public static final String PROPERTY_LOGOS_URL = "urlsToLogos";
-    public static final String PROPERTY_SUPPORTED_SORTS = "sortBysAvailable";
 
     public static final Parcelable.Creator<NewsSourceDto> CREATOR = new NewsSourceDtoCreator();
 
@@ -56,36 +46,16 @@ public class NewsSourceDto implements Parcelable {
     @Nullable
     private final String mUrl;
 
-    @NonNull
-    private final String mCategory;
-
-    @NonNull
-    private final String mLanguage;
-
-    @NonNull
-    private final String mCountry;
-
-    @Nullable
-    private final String mLogoUrl;
-
     @JsonCreator
     public NewsSourceDto(
             @NonNull @JsonProperty(PROPERTY_ID) final String id,
             @NonNull @JsonProperty(PROPERTY_NAME) final String name,
             @NonNull @JsonProperty(PROPERTY_DESCRIPTION) final String description,
-            @Nullable @JsonProperty(PROPERTY_URL) final String url,
-            @NonNull @JsonProperty(PROPERTY_CATEGORY) @Categories.CategoryDef final String category,
-            @NonNull @JsonProperty(PROPERTY_LANGUAGE) @LanguageCode final String language,
-            @NonNull @JsonProperty(PROPERTY_COUNTRY) @CountryCode final String country,
-            @NonNull @JsonProperty(PROPERTY_LOGOS_URL) final Map<String, String> logoUrl) {
+            @Nullable @JsonProperty(PROPERTY_URL) final String url) {
         mId = id;
         mName = name;
         mDescription = description;
         mUrl = url == null || url.isEmpty() ? null : url;
-        mCategory = category;
-        mLanguage = language;
-        mCountry = country;
-        mLogoUrl = filterUrl(logoUrl);
     }
 
     protected NewsSourceDto(Parcel in) {
@@ -93,10 +63,6 @@ public class NewsSourceDto implements Parcelable {
         mName = in.readString();
         mDescription = in.readString();
         mUrl = in.readString();
-        mCategory = in.readString();
-        mLanguage = in.readString();
-        mCountry = in.readString();
-        mLogoUrl = in.readString();
     }
 
     @Nullable
@@ -129,29 +95,6 @@ public class NewsSourceDto implements Parcelable {
         return mUrl;
     }
 
-    @Categories.CategoryDef
-    @NonNull
-    public String getCategory() {
-        return mCategory;
-    }
-
-    @LanguageCode
-    @NonNull
-    public String getLanguage() {
-        return mLanguage;
-    }
-
-    @CountryCode
-    @NonNull
-    public String getCountry() {
-        return mCountry;
-    }
-
-    @Nullable
-    public String getLogoUrl() {
-        return mLogoUrl;
-    }
-
     @Override
     public String toString() {
         return mName;
@@ -170,11 +113,7 @@ public class NewsSourceDto implements Parcelable {
         return mId.equals(newsSourceDto.mId) &&
                 mName.equals(newsSourceDto.mName) &&
                 mDescription.equals(newsSourceDto.mDescription) &&
-                Objects.equals(mUrl, newsSourceDto.mUrl) &&
-                mCategory.equals(newsSourceDto.mCategory) &&
-                mLanguage.equals(newsSourceDto.mLanguage) &&
-                mCountry.equals(newsSourceDto.mCountry) &&
-                Objects.equals(mLogoUrl, newsSourceDto.mLogoUrl);
+                Objects.equals(mUrl, newsSourceDto.mUrl);
     }
 
     @Override
@@ -193,10 +132,6 @@ public class NewsSourceDto implements Parcelable {
         dest.writeString(mName);
         dest.writeString(mDescription);
         dest.writeString(mUrl);
-        dest.writeString(mCategory);
-        dest.writeString(mLanguage);
-        dest.writeString(mCountry);
-        dest.writeString(mLogoUrl);
     }
 
     private static class NewsSourceDtoCreator implements Creator<NewsSourceDto> {

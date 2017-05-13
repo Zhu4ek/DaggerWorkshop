@@ -1,6 +1,8 @@
 package com.kirich1409.news.ui.articles;
 
+import com.kirich1409.news.dagger.FragmentModule;
 import com.kirich1409.news.dagger.FragmentScope;
+import com.kirich1409.news.ui.articles.mvp.ArticlesMVPModule;
 
 import dagger.Subcomponent;
 
@@ -8,7 +10,7 @@ import dagger.Subcomponent;
  * @author Kirill Rozov
  */
 @FragmentScope
-@Subcomponent(modules = ArticlesFragmentModule.class)
+@Subcomponent(modules = {FragmentModule.class, ArticlesMVPModule.class})
 public interface ArticlesFragmentComponent {
 
     void inject(ArticlesFragment fragment);
@@ -16,7 +18,7 @@ public interface ArticlesFragmentComponent {
     @Subcomponent.Builder
     interface Builder {
 
-        Builder articlesFragmentModule(ArticlesFragmentModule module);
+        Builder fragmentModule(FragmentModule module);
 
         ArticlesFragmentComponent build();
     }

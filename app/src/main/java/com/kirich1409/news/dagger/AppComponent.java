@@ -2,7 +2,6 @@ package com.kirich1409.news.dagger;
 
 import com.kirich1409.news.NewsApp;
 import com.kirich1409.news.network.NewsApiBaseUrl;
-import com.kirich1409.news.ui.article.ArticleActivityComponent;
 import com.kirich1409.news.ui.articles.ArticlesActivityComponent;
 
 import javax.inject.Singleton;
@@ -27,8 +26,6 @@ public interface AppComponent {
     void inject(NewsApp app);
 
     ArticlesActivityComponent.Builder articlesActivityComponent();
-
-    ArticleActivityComponent.Builder articleActivityComponent();
 
     @Component.Builder
     interface Builder {

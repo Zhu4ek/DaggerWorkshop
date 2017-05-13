@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">News</string>
     <string name="label_activity_articles">Articles</string>
-    <string name="label_activity_article">Article</string>
     <string name="label_activity_news_sources">News sources</string>
+
+    <string name="linear_layout_manager" translatable="false">android.support.v7.widget.LinearLayoutManager</string>
+    <string name="staggered_grid_layout_manager" translatable="false">android.support.v7.widget.StaggeredGridLayoutManager</string>
 </resources>

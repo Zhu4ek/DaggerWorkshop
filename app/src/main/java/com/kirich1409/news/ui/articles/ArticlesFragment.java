@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.kirich1409.news.R;
+import com.kirich1409.news.dagger.FragmentModule;
 import com.kirich1409.news.mvp.MVPSupportFragment;
 import com.kirich1409.news.network.data.ArticleDto;
 import com.kirich1409.news.ui.articles.mvp.ArticlesContract;
@@ -50,14 +51,14 @@ public class ArticlesFragment extends MVPSupportFragment<ArticlesContract.View>
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         ((ArticlesActivity) getContext())
                 .getActivityComponent()
                 .articlesFragmentComponent()
-                .articlesFragmentModule(new ArticlesFragmentModule(this))
+                .fragmentModule(new FragmentModule(this))
                 .build()
                 .inject(this);
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -74,8 +75,12 @@ public class ArticlesFragment extends MVPSupportFragment<ArticlesContract.View>
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        StaggeredGridLayoutManager layoutManager =
+                (StaggeredGridLayoutManager) mRecyclerView.getLayoutManager();
+
+        int itemMinWidth = getResources().getDimensionPixelSize(R.dimen.article_item_min_width);
+        layoutManager.setSpanCount(getResources().getDisplayMetrics().widthPixels / itemMinWidth);
     }
 
     @Override

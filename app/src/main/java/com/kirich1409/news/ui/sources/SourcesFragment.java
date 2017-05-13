@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -53,7 +54,7 @@ public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
 
     @Nullable
     @Override
-    public android.view.View onCreateView(@NonNull final LayoutInflater inflater,
+    public View onCreateView(@NonNull final LayoutInflater inflater,
                                           @Nullable final ViewGroup container,
                                           @Nullable final Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_sources, container, false);
@@ -67,6 +68,8 @@ public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(
+                new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     }
 
     @Override

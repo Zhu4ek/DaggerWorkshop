@@ -19,7 +19,6 @@ import java.util.Objects;
  * @date 1/5/17.
  */
 @JsonPropertyOrder({
-        ArticleDto.PROPERTY_AUTHOR,
         ArticleDto.PROPERTY_TITLE,
         ArticleDto.PROPERTY_DESCRIPTION,
         ArticleDto.PROPERTY_URL,
@@ -31,16 +30,11 @@ public class ArticleDto implements Parcelable {
 
     public static final Parcelable.Creator<ArticleDto> CREATOR = new ArticleDtoCreator();
 
-    public static final String PROPERTY_AUTHOR = "author";
     public static final String PROPERTY_TITLE = "title";
     public static final String PROPERTY_DESCRIPTION = "description";
     public static final String PROPERTY_URL = "url";
     public static final String PROPERTY_IMAGE_URL = "urlToImage";
     public static final String PROPERTY_PUBLISHED = "publishedAt";
-
-    @JsonProperty(PROPERTY_AUTHOR)
-    @NonNull
-    private final String mAuthor;
 
     @JsonProperty(PROPERTY_TITLE)
     @NonNull
@@ -63,23 +57,16 @@ public class ArticleDto implements Parcelable {
     private final OffsetDateTime mPublished;
 
     @JsonCreator
-    public ArticleDto(@NonNull @JsonProperty(PROPERTY_AUTHOR) final String author,
-                      @NonNull @JsonProperty(PROPERTY_TITLE) final String title,
+    public ArticleDto(@NonNull @JsonProperty(PROPERTY_TITLE) final String title,
                       @NonNull @JsonProperty(PROPERTY_DESCRIPTION) final String description,
                       @Nullable @JsonProperty(PROPERTY_URL) final String url,
                       @Nullable @JsonProperty(PROPERTY_IMAGE_URL) final String imageUrl,
                       @Nullable @JsonProperty(PROPERTY_PUBLISHED) final OffsetDateTime published) {
-        mAuthor = author;
         mTitle = title;
         mDescription = description;
         mUrl = url;
         mImageUrl = imageUrl;
         mPublished = published;
-    }
-
-    @NonNull
-    public String getAuthor() {
-        return mAuthor;
     }
 
     @NonNull
@@ -123,7 +110,6 @@ public class ArticleDto implements Parcelable {
 
         ArticleDto that = (ArticleDto) o;
         return mPublished.equals(that.mPublished)
-                && mAuthor.equals(that.mAuthor)
                 && mTitle.equals(that.mTitle)
                 && mDescription.equals(that.mDescription)
                 && Objects.equals(mUrl, that.mUrl)
@@ -143,7 +129,6 @@ public class ArticleDto implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mAuthor);
         dest.writeString(mTitle);
         dest.writeString(mDescription);
         dest.writeString(mUrl);
@@ -152,7 +137,6 @@ public class ArticleDto implements Parcelable {
     }
 
     protected ArticleDto(Parcel in) {
-        mAuthor = in.readString();
         mTitle = in.readString();
         mDescription = in.readString();
         mUrl = in.readString();

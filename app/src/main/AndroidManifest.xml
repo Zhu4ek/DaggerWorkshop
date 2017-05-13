@@ -32,12 +32,6 @@
             android:name=".ui.articles.ArticlesActivity"
             android:label="@string/label_activity_articles"
             />
-
-        <activity
-            android:name=".ui.article.ArticleActivity"
-            android:label="@string/label_activity_article"
-            android:theme="@style/Theme.News.NoActionBar"
-            />
     </application>
 
 </manifest>

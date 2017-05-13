@@ -1,6 +1,5 @@
 package com.kirich1409.news.ui.sources;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,10 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.kirich1409.news.R;
 import com.kirich1409.news.network.data.NewsSourceDto;
 import com.kirich1409.news.widget.ArrayAdapter;
@@ -60,9 +57,6 @@ class SourceAdapter extends ArrayAdapter<NewsSourceDto, SourceAdapter.ViewHolder
             return new ViewHolder(view);
         }
 
-        @BindView(R.id.icon)
-        ImageView mImageView;
-
         @BindView(R.id.name)
         TextView mNameView;
 
@@ -83,16 +77,6 @@ class SourceAdapter extends ArrayAdapter<NewsSourceDto, SourceAdapter.ViewHolder
         void setSource(@NonNull NewsSourceDto source) {
             mSource = source;
             mNameView.setText(source.getName());
-
-            if (source.getLogoUrl() == null) {
-                mImageView.setVisibility(View.GONE);
-                mImageView.setImageDrawable(null);
-            } else {
-                mImageView.setVisibility(View.VISIBLE);
-                Glide.with((Activity) itemView.getContext())
-                        .load(source.getLogoUrl())
-                        .into(mImageView);
-            }
         }
 
         void setListener(@Nullable Listener<NewsSourceDto, ViewHolder> listener) {
