@@ -1,8 +1,10 @@
 package com.kirich1409.news.ui.articles.mvp;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.kirich1409.news.dagger.RxModule;
 import com.kirich1409.news.mvp.BasePresenter;
 import com.kirich1409.news.network.ArticlesDataSource;
 import com.kirich1409.news.network.data.ArticleDto;
@@ -19,6 +21,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import dagger.Lazy;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
@@ -30,12 +36,32 @@ import io.reactivex.disposables.Disposable;
 public class ArticlesPresenter extends BasePresenter<ArticlesContract.View>
         implements ArticlesContract.Presenter {
 
-    private ArticlesDataSource mDataSource;
+    private final Lazy<ArticlesContract.Starter> mStarter;
+
+    private final ArticlesDataSource mDataSource;
+
+    @Nullable
     Disposable mArticlesDisposable;
-    private Scheduler mComputationScheduler;
-    private Scheduler mObserverScheduler;
+
+    private final Scheduler mComputationScheduler;
+    private final Scheduler mObserverScheduler;
+
     private boolean mLoadingData;
-    private NewsSourceDto mSource;
+
+    private final NewsSourceDto mSource;
+
+    @Inject
+    ArticlesPresenter(@NonNull Lazy<ArticlesContract.Starter> starter,
+                      @NonNull ArticlesDataSource dataSource,
+                      @Named(RxModule.COMPUTATION) Scheduler computationScheduler,
+                      @Named(RxModule.MAIN) Scheduler observerScheduler,
+                      @NonNull NewsSourceDto source) {
+        mStarter = starter;
+        mDataSource = dataSource;
+        mComputationScheduler = computationScheduler;
+        mObserverScheduler = observerScheduler;
+        mSource = source;
+    }
 
     @Override
     protected void onAttachView() {
@@ -76,12 +102,12 @@ public class ArticlesPresenter extends BasePresenter<ArticlesContract.View>
 
     @Override
     public void openArticle(@NonNull ArticleDto article) {
-        throw new UnsupportedOperationException("Not implemented");
+        mStarter.get().openArticle(article);
     }
 
     @Override
     public void openSourceWebPage() {
-        throw new UnsupportedOperationException("Not implemented");
+        mStarter.get().openSourceWebPage(mSource.getUrl());
     }
 
     private class ArticlesObserver implements Observer<ArticlesResponseDto> {

@@ -11,9 +11,16 @@ import com.kirich1409.news.mvp.AndroidComponent;
 import com.kirich1409.news.network.data.ArticleDto;
 import com.kirich1409.news.util.Exceptions;
 
+import javax.inject.Inject;
+
 public class ArticlesStarter implements ArticlesContract.Starter {
 
-    private AndroidComponent mAndroidComponent;
+    private final AndroidComponent mAndroidComponent;
+
+    @Inject
+    ArticlesStarter(AndroidComponent androidComponent) {
+        mAndroidComponent = androidComponent;
+    }
 
     @Override
     public void openSourceWebPage(@NonNull String url) {

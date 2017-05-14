@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.kirich1409.news.R;
+import com.kirich1409.news.dagger.FragmentModule;
 import com.kirich1409.news.mvp.MVPSupportFragment;
 import com.kirich1409.news.network.data.ArticleDto;
 import com.kirich1409.news.ui.articles.mvp.ArticlesContract;
@@ -22,12 +23,17 @@ import com.kirich1409.news.ui.articles.mvp.ArticlesContract;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class ArticlesFragment extends MVPSupportFragment<ArticlesContract.View>
         implements ArticlesContract.View, ArticlesAdapter.Listener<ArticleDto, ArticlesAdapter.ViewHolder> {
+
+    @Inject
+    ArticlesContract.Presenter mPresenter;
 
     @BindView(R.id.list)
     RecyclerView mRecyclerView;
@@ -45,6 +51,12 @@ public class ArticlesFragment extends MVPSupportFragment<ArticlesContract.View>
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        ((ArticlesActivity) getContext())
+                .getActivityComponent()
+                .articlesFragmentComponent()
+                .fragmentModule(new FragmentModule(this))
+                .build()
+                .inject(this);
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -84,7 +96,8 @@ public class ArticlesFragment extends MVPSupportFragment<ArticlesContract.View>
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_web_page:
-                throw new UnsupportedOperationException("Not implemented");
+                mPresenter.openSourceWebPage();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -102,8 +115,14 @@ public class ArticlesFragment extends MVPSupportFragment<ArticlesContract.View>
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter = null;
+    }
+
+    @Override
     public ArticlesContract.Presenter getPresenter() {
-        throw new UnsupportedOperationException("Not implemented");
+        return mPresenter;
     }
 
     @Override
@@ -138,6 +157,6 @@ public class ArticlesFragment extends MVPSupportFragment<ArticlesContract.View>
     @Override
     public void onItemSelected(@NonNull ArticlesAdapter.ViewHolder viewHolder,
                                @NonNull ArticleDto article) {
-        throw new UnsupportedOperationException("Not implemented");
+        mPresenter.openArticle(article);
     }
 }

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
+import com.kirich1409.news.NewsApp;
 import com.kirich1409.news.R;
 import com.kirich1409.news.network.data.NewsSourceDto;
 import com.kirich1409.news.util.Exceptions;
@@ -14,6 +15,8 @@ import com.kirich1409.news.util.Exceptions;
 public class ArticlesActivity extends AppCompatActivity {
 
     private static final String EXTRA_SOURCE = "source";
+
+    private ArticlesActivityComponent mActivitySubcomponent;
 
     public static Intent newIntent(@NonNull Context context, @NonNull NewsSourceDto source) {
         return new Intent(context, ArticlesActivity.class)
@@ -28,6 +31,13 @@ public class ArticlesActivity extends AppCompatActivity {
             throw Exceptions.newIllegalArgument(
                     "Intent must contains string extra \"%s\"", EXTRA_SOURCE);
         }
+        mActivitySubcomponent = ((NewsApp) getApplication())
+                .getAppComponent()
+                .articlesActivityComponent()
+                .articlesActivityModule(new ArticlesActivityModule(this))
+                .newsSource(source)
+                .build();
+        mActivitySubcomponent.inject(this);
         setContentView(R.layout.activity_articles);
     }
 
@@ -38,5 +48,9 @@ public class ArticlesActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setTitle(title);
         }
+    }
+
+    public final ArticlesActivityComponent getActivityComponent() {
+        return mActivitySubcomponent;
     }
 }

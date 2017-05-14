@@ -2,6 +2,7 @@ package com.kirich1409.news.dagger;
 
 import com.kirich1409.news.NewsApp;
 import com.kirich1409.news.network.NewsApiBaseUrl;
+import com.kirich1409.news.ui.articles.ArticlesActivityComponent;
 
 import javax.inject.Singleton;
 
@@ -18,6 +19,8 @@ import dagger.android.AndroidInjectionModule;
 public interface AppComponent {
 
     void inject(NewsApp app);
+
+    ArticlesActivityComponent.Builder articlesActivityComponent();
 
     @Component.Builder
     interface Builder {
