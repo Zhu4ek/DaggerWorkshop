@@ -47,7 +47,6 @@ public final class NewsSourcesDataSource {
 
         mService.sources()
                 .subscribeOn(mNetworkScheduler)
-                .observeOn(mNetworkScheduler)
                 .subscribe(new NewsSourcesObserver());
     }
 
