@@ -1,7 +1,9 @@
 package com.kirich1409.news.ui.sources.mvp;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.kirich1409.news.dagger.RxModule;
 import com.kirich1409.news.mvp.BasePresenter;
 import com.kirich1409.news.network.NewsSourcesDataSource;
 import com.kirich1409.news.network.data.NewsSourceDto;
@@ -9,6 +11,10 @@ import com.kirich1409.news.network.data.NewsSourcesResponseDto;
 import com.kirich1409.news.util.Exceptions;
 import com.kirich1409.news.util.RxUtils;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import dagger.Lazy;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
@@ -20,11 +26,30 @@ import io.reactivex.disposables.Disposable;
 final class SourcesPresenter extends BasePresenter<SourcesContract.View>
         implements SourcesContract.Presenter {
 
-    private NewsSourcesDataSource mDataSource;
+    @NonNull
+    private final Lazy<SourcesContract.Starter> mStarter;
+
+    @NonNull
+    private final NewsSourcesDataSource mDataSource;
+
+    @Nullable
     private Disposable mNewsSourcesDisposable;
-    private Scheduler mComputationScheduler;
-    private Scheduler mObserverScheduler;
+
+    private final Scheduler mComputationScheduler;
+    private final Scheduler mObserverScheduler;
+
     private boolean mLoadingData;
+
+    @Inject
+    SourcesPresenter(@NonNull Lazy<SourcesContract.Starter> starter,
+                     @NonNull NewsSourcesDataSource dataSource,
+                     @NonNull @Named(RxModule.COMPUTATION) Scheduler computationScheduler,
+                     @NonNull @Named(RxModule.MAIN) Scheduler observerScheduler) {
+        mStarter = starter;
+        mDataSource = dataSource;
+        mComputationScheduler = computationScheduler;
+        mObserverScheduler = observerScheduler;
+    }
 
     @Override
     protected void onAttachView() {
@@ -50,7 +75,7 @@ final class SourcesPresenter extends BasePresenter<SourcesContract.View>
 
     @Override
     public void openArticles(@NonNull NewsSourceDto source) {
-        throw new UnsupportedOperationException("Not implemented");
+        mStarter.get().openArticles(source);
     }
 
     private void subscribeToNewsSourcesUpdates() {

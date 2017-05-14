@@ -1,5 +1,6 @@
 package com.kirich1409.news;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
 
@@ -7,12 +8,20 @@ import com.kirich1409.news.dagger.AppComponent;
 import com.kirich1409.news.dagger.AppModule;
 import com.kirich1409.news.dagger.DaggerAppComponent;
 
+import javax.inject.Inject;
+
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
+
 /**
  * @authror Kirill Rozov
  * @date 1/5/17.
  */
 
-public class NewsApp extends MultiDexApplication {
+public class NewsApp extends MultiDexApplication implements HasActivityInjector {
+
+    @Inject
+    DispatchingAndroidInjector<Activity> mActivityInjector;
 
     private final AppComponent mAppComponent;
 
@@ -35,5 +44,10 @@ public class NewsApp extends MultiDexApplication {
             throw new IllegalStateException();
         }
         return mAppComponent;
+    }
+
+    @Override
+    public DispatchingAndroidInjector<Activity> activityInjector() {
+        return mActivityInjector;
     }
 }

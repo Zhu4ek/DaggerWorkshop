@@ -19,9 +19,12 @@ import com.kirich1409.news.ui.sources.mvp.SourcesContract;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  * @authror Kirill Rozov
@@ -29,8 +32,10 @@ import butterknife.Unbinder;
  */
 
 public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
-        implements SourcesContract.View,
-        SourceAdapter.Listener<NewsSourceDto, SourceAdapter.ViewHolder> {
+        implements SourcesContract.View, SourceAdapter.Listener<NewsSourceDto, SourceAdapter.ViewHolder> {
+
+    @Inject
+    SourcesContract.Presenter mPresenter;
 
     @BindView(R.id.list)
     RecyclerView mRecyclerView;
@@ -41,11 +46,17 @@ public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
     @Nullable
     private Unbinder mUnbinder;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater,
-                             @Nullable final ViewGroup container,
-                             @Nullable final Bundle savedInstanceState) {
+                                          @Nullable final ViewGroup container,
+                                          @Nullable final Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_sources, container, false);
     }
 
@@ -71,8 +82,14 @@ public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter = null;
+    }
+
+    @Override
     public SourcesContract.Presenter getPresenter() {
-        throw new UnsupportedOperationException("Not implemented");
+        return mPresenter;
     }
 
     @Override
@@ -93,6 +110,6 @@ public class SourcesFragment extends MVPSupportFragment<SourcesContract.View>
     @Override
     public void onItemSelected(@NonNull SourceAdapter.ViewHolder viewHolder,
                                @NonNull NewsSourceDto source) {
-        //TODO Open source's articles
+        mPresenter.openArticles(source);
     }
 }

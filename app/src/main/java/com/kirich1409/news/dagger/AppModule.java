@@ -12,7 +12,7 @@ import dagger.Provides;
  * @authror Kirill Rozov
  * @date 1/5/17.
  */
-@Module(includes = {NewsApiModule.class, RxModule.class, AppBinds.class,})
+@Module(includes = {NewsApiModule.class, RxModule.class, AppBinds.class, ActivitiesModule.class})
 public class AppModule {
 
     @NonNull
