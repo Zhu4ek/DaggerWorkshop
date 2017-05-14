@@ -3,7 +3,6 @@ package com.kirich1409.news.network;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -70,7 +69,6 @@ public abstract class NewsNetworkModule {
     static OkHttpClient provideOkHttpClient(@NonNull Cache cache) {
         return new OkHttpClient.Builder()
                 .cache(cache)
-                .addNetworkInterceptor(new StethoInterceptor())
                 .addInterceptor(new AddAuthNewsApiInterceptor())
                 .build();
     }
