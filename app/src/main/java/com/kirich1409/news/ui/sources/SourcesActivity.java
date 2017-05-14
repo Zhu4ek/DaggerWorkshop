@@ -22,7 +22,6 @@ public class SourcesActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        AndroidInjection.inject(this);
         setContentView(R.layout.activity_sources);
     }
 
