@@ -22,9 +22,7 @@ public class SourcesActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        if (mSupportFragmentInjector == null) {
-            AndroidInjection.inject(this);
-        }
+        AndroidInjection.inject(this);
         setContentView(R.layout.activity_sources);
     }
 

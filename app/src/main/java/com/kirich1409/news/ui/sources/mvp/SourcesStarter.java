@@ -1,9 +1,11 @@
 package com.kirich1409.news.ui.sources.mvp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.kirich1409.news.mvp.AndroidComponent;
 import com.kirich1409.news.network.data.NewsSourceDto;
+import com.kirich1409.news.ui.articles.ArticlesActivity;
 
 import javax.inject.Inject;
 
@@ -22,6 +24,7 @@ class SourcesStarter implements SourcesContract.Starter {
 
     @Override
     public void openArticles(@NonNull NewsSourceDto source) {
-        throw new UnsupportedOperationException("Not implemented");
+        Intent intent = ArticlesActivity.newIntent(mComponent.getContext(), source);
+        mComponent.startActivity(intent);
     }
 }
